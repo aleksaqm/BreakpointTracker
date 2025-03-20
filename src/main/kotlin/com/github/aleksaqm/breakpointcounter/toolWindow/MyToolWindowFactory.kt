@@ -10,6 +10,9 @@ import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.github.aleksaqm.breakpointcounter.MyBundle
 import com.github.aleksaqm.breakpointcounter.services.MyProjectService
+import com.intellij.ui.components.JBScrollPane
+import com.intellij.ui.jcef.JBCefBrowser
+import com.intellij.util.ui.JBUI
 import javax.swing.JButton
 
 
@@ -20,9 +23,21 @@ class MyToolWindowFactory : ToolWindowFactory {
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val myToolWindow = MyToolWindow(toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
-        toolWindow.contentManager.addContent(content)
+        val toolWindowPanel = JBPanel<JBPanel<*>>(null).apply {
+            border = JBUI.Borders.empty()
+        }
+
+        // Create JCEF Browser instance
+        val browser = JBCefBrowser()
+        browser.loadHTML("<html><body><h2>Breakpoint Tracker</h2><p>Loading...</p></body></html>")
+
+        // Add the browser to the panel
+        toolWindowPanel.add(JBScrollPane(browser.component))
+
+        // Register the content in the tool windowplu
+        val contentManager = toolWindow.contentManager
+        val content = contentManager.factory.createContent(toolWindowPanel, "", false)
+        contentManager.addContent(content)
     }
 
     override fun shouldBeAvailable(project: Project) = true
