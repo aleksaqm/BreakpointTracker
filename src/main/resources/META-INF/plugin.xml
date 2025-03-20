@@ -15,6 +15,7 @@
                     anchor="right"
                     canCloseContent="false"
                     canWorkInDumbMode="true"/>
+        <projectService serviceImplementation="com.github.aleksaqm.breakpointcounter.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>

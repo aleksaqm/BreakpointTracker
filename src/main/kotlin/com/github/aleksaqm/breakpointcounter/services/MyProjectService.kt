@@ -1,16 +1,48 @@
 package com.github.aleksaqm.breakpointcounter.services
 
-import com.intellij.openapi.components.Service
+import com.github.aleksaqm.breakpointcounter.listeners.BreakpointListener
+import com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowService
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.github.aleksaqm.breakpointcounter.MyBundle
+import com.intellij.util.messages.MessageBusConnection
+import com.intellij.xdebugger.XDebuggerManager
+import com.intellij.xdebugger.breakpoints.XBreakpoint
+import com.intellij.xdebugger.breakpoints.XBreakpointListener
 
-@Service(Service.Level.PROJECT)
-class MyProjectService(project: Project) {
+class MyProjectService(private val project: Project) : Disposable {
+
+    private var connection: MessageBusConnection? = null
 
     init {
-        thisLogger().info(MyBundle.message("projectService", project.name))
-        thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
+        thisLogger().warn("MyProjectService initialized for project: ${project.name}")
+        subscribeToBreakpointEvents()
+    }
+
+    private fun subscribeToBreakpointEvents() {
+        connection = project.messageBus.connect()
+
+        val listener = BreakpointListener(project) { jsonData ->
+            MyToolWindowService.getInstance(project).updateBreakpoints(jsonData)
+        }
+
+        connection?.subscribe(XBreakpointListener.TOPIC, object : XBreakpointListener<XBreakpoint<*>> {
+            override fun breakpointAdded(breakpoint: XBreakpoint<*>) {
+                listener.breakpointAdded(breakpoint)
+            }
+
+            override fun breakpointRemoved(breakpoint: XBreakpoint<*>) {
+                listener.breakpointRemoved(breakpoint)
+            }
+
+            override fun breakpointChanged(breakpoint: XBreakpoint<*>) {
+                listener.breakpointChanged(breakpoint)
+            }
+        })
+    }
+
+    override fun dispose() {
+        connection?.disconnect()
     }
 
     fun getRandomNumber() = (1..100).random()
