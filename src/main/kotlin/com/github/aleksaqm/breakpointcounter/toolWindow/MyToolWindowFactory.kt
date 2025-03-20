@@ -14,6 +14,7 @@ import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.util.ui.JBUI
 import javax.swing.JButton
+import javax.swing.JPanel
 
 
 class MyToolWindowFactory : ToolWindowFactory {
@@ -23,20 +24,33 @@ class MyToolWindowFactory : ToolWindowFactory {
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val toolWindowPanel = JBPanel<JBPanel<*>>(null).apply {
-            border = JBUI.Borders.empty()
-        }
+        val myProjectService = project.getService(MyProjectService::class.java)
+        val toolWindowService = MyToolWindowService.getInstance(project)
+        val browser = toolWindowService.browser
 
-        // Create JCEF Browser instance
-        val browser = JBCefBrowser()
-        browser.loadHTML("<html><body><h2>Breakpoint Tracker</h2><p>Loading...</p></body></html>")
+        // Load basic HTML structure
+        browser.loadHTML("""
+                <html>
+                <head>
+                    <script>
+                        window.updateBreakpoints = function (breakpoints) {
+                            document.getElementById('count').innerText = 
+                                "Total Breakpoints: " + (breakpoints.length-1);
+                            document.getElementById('content').innerHTML = 
+                                breakpoints.map(bp => `<p>$${"$"}{bp.file}</p>`).join('');
+                        };
+                    </script>
+                </head>
+                <body>
+                    <h2>Breakpoint Tracker</h2>
+                    <p id="count">Total Breakpoints: 0</p>
+                    <div id="content">No breakpoints</div>
+                </body>
+                </html>
+            """)
 
-        // Add the browser to the panel
-        toolWindowPanel.add(JBScrollPane(browser.component))
-
-        // Register the content in the tool windowplu
         val contentManager = toolWindow.contentManager
-        val content = contentManager.factory.createContent(toolWindowPanel, "", false)
+        val content = contentManager.factory.createContent(JPanel().apply { add(browser.component) }, "", false)
         contentManager.addContent(content)
     }
 
