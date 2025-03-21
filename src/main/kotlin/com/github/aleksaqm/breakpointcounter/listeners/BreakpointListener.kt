@@ -13,17 +13,17 @@ class BreakpointListener(private val project: Project, private val updateCallbac
     XBreakpointListener<XBreakpoint<*>> {
 
     override fun breakpointAdded(breakpoint: XBreakpoint<*>) {
-        thisLogger().warn("Breakpoint added: ${breakpoint.sourcePosition?.file?.path ?: "Unknown"}")
+//        thisLogger().warn("Breakpoint added: ${breakpoint.sourcePosition?.file?.path ?: "Unknown"}")
         updateBreakpoints()
     }
 
     override fun breakpointRemoved(breakpoint: XBreakpoint<*>) {
-        thisLogger().warn("Breakpoint removed: ${breakpoint.sourcePosition?.file?.path ?: "Unknown"}")
+//        thisLogger().warn("Breakpoint removed: ${breakpoint.sourcePosition?.file?.path ?: "Unknown"}")
         updateBreakpoints()
     }
 
     override fun breakpointChanged(breakpoint: XBreakpoint<*>) {
-        thisLogger().warn("Breakpoint changed: ${breakpoint.sourcePosition?.file?.path ?: "Unknown"}")
+//        thisLogger().warn("Breakpoint changed: ${breakpoint.sourcePosition?.file?.path ?: "Unknown"}")
         updateBreakpoints()
     }
 
@@ -32,11 +32,11 @@ class BreakpointListener(private val project: Project, private val updateCallbac
             XDebuggerManager.getInstance(project).breakpointManager
         val breakpoints = breakpointManager.allBreakpoints
 
-        val breakpointData = breakpoints.map { bp ->
-            mapOf("file" to (bp.sourcePosition?.file?.path ?: "Unknown"))
+        val breakpointData = breakpoints.mapNotNull { bp ->
+            val filePath = bp.sourcePosition?.file?.path
+            filePath?.let { mapOf("file" to it) }
         }
 
-        // Convert to JSON and send update
         val jsonData = Json.encodeToString(breakpointData)
         thisLogger().warn("Sending data to UI: $jsonData")
         updateCallback(jsonData)

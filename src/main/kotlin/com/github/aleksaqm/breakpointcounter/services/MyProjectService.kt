@@ -15,7 +15,7 @@ class MyProjectService(private val project: Project) : Disposable {
     private var connection: MessageBusConnection? = null
 
     init {
-        thisLogger().warn("MyProjectService initialized for project: ${project.name}")
+//        thisLogger().warn("MyProjectService initialized for project: ${project.name}")
         subscribeToBreakpointEvents()
     }
 

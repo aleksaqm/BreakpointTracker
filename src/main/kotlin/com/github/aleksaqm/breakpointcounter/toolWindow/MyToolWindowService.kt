@@ -10,7 +10,7 @@ class MyToolWindowService(project: Project) {
     val browser = JBCefBrowser()
 
     fun updateBreakpoints(jsonData: String) {
-        thisLogger().warn("Executing JavaScript with data: $jsonData")
+//        thisLogger().warn("Executing JavaScript with data: $jsonData")
         browser.cefBrowser.executeJavaScript(
             "window.updateBreakpoints($jsonData);", browser.cefBrowser.url, 0
         )

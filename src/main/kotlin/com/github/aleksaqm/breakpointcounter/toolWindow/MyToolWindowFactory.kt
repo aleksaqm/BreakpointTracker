@@ -34,10 +34,12 @@ class MyToolWindowFactory : ToolWindowFactory {
                 <head>
                     <script>
                         window.updateBreakpoints = function (breakpoints) {
-                            document.getElementById('count').innerText = 
-                                "Total Breakpoints: " + (breakpoints.length-1);
+                            console.log("Received breakpoints:", breakpoints); // Debugging log
+                            document.getElementById('count').innerText = "Total Breakpoints: " + breakpoints.length;
                             document.getElementById('content').innerHTML = 
-                                breakpoints.map(bp => `<p>$${"$"}{bp.file}</p>`).join('');
+                                breakpoints.length > 0 
+                                    ? breakpoints.map(bp => `<p>${"$"}{bp.file}</p>`).join('')
+                                    : "<p>No breakpoints</p>";
                         };
                     </script>
                 </head>
