@@ -34,19 +34,17 @@ class BreakpointListener(private val project: Project, private val browser: JBCe
         val breakpointManager = XDebuggerManager.getInstance(project).breakpointManager
         val breakpoints = breakpointManager.allBreakpoints
 
+        val projectBasePath = project.basePath?.replace("\\", "/") ?: ""
+
         val breakpointData = breakpoints.mapNotNull { bp ->
-            bp.sourcePosition?.file?.path?.let { BreakpointInfo(it, bp.sourcePosition?.line) }
+            bp.sourcePosition?.file?.path?.replace("\\", "/")?.let { filePath ->
+                val relativePath = filePath.removePrefix("$projectBasePath/")
+                BreakpointInfo(relativePath, bp.sourcePosition?.line)
+            }
         }
 
         val jsonData = Json.encodeToString(breakpointData)
-        val script = """window.updateBreakpoints($jsonData);"""
-
-        thisLogger().warn("Executing JavaScript AAAAAAAAAAAAAAAAAA: $script")
-
         val toolWindowService = MyToolWindowService.getInstance(project)
         toolWindowService.updateBreakpoints(jsonData)
-
-//        MyToolWindowService.getInstance(project).updateBreakpoints(jsonData)
-//        browser.cefBrowser.executeJavaScript(script, browser.cefBrowser.url, 0)
     }
 }
