@@ -25,35 +25,11 @@ class MyToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val myProjectService = project.getService(MyProjectService::class.java)
-        val toolWindowService = MyToolWindowService.getInstance(project)
-        val browser = toolWindowService.browser
+        val toolWindowService = MyToolWindowService.getInstance(project) // Use the singleton instance
+        val browser = toolWindowService.getBrowser() // Get the existing browser
 
-        // Load basic HTML structure
-        browser.loadHTML("""
-                <html>
-                <head>
-                    <script>
-                        window.updateBreakpoints = function (breakpoints) {
-                            console.log("Received breakpoints:", breakpoints); // Debugging log
-                            document.getElementById('count').innerText = "Total Breakpoints: " + breakpoints.length;
-                            document.getElementById('content').innerHTML = 
-                                breakpoints.length > 0 
-                                    ? breakpoints.map(bp => `<p>${"$"}{bp.file}</p>`).join('')
-                                    : "<p>No breakpoints</p>";
-                        };
-                    </script>
-                </head>
-                <body>
-                    <h2>Breakpoint Tracker</h2>
-                    <p id="count">Total Breakpoints: 0</p>
-                    <div id="content">No breakpoints</div>
-                </body>
-                </html>
-            """)
-
-        val contentManager = toolWindow.contentManager
-        val content = contentManager.factory.createContent(JPanel().apply { add(browser.component) }, "", false)
-        contentManager.addContent(content)
+        val content = ContentFactory.getInstance().createContent(browser.component, "", false)
+        toolWindow.contentManager.addContent(content)
     }
 
     override fun shouldBeAvailable(project: Project) = true
