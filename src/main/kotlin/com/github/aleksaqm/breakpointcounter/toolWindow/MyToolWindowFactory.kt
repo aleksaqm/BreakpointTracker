@@ -25,8 +25,8 @@ class MyToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val myProjectService = project.getService(MyProjectService::class.java)
-        val toolWindowService = MyToolWindowService.getInstance(project) // Use the singleton instance
-        val browser = toolWindowService.getBrowser() // Get the existing browser
+        val toolWindowService = MyToolWindowService.getInstance(project)
+        val browser = toolWindowService.getBrowser()
 
         val content = ContentFactory.getInstance().createContent(browser.component, "", false)
         toolWindow.contentManager.addContent(content)

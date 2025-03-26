@@ -43,7 +43,7 @@ class BreakpointListener(private val project: Project, private val browser: JBCe
 
         thisLogger().warn("Executing JavaScript AAAAAAAAAAAAAAAAAA: $script")
 
-        val toolWindowService = MyToolWindowService(project)
+        val toolWindowService = MyToolWindowService.getInstance(project)
         toolWindowService.updateBreakpoints(jsonData)
 
 //        MyToolWindowService.getInstance(project).updateBreakpoints(jsonData)
