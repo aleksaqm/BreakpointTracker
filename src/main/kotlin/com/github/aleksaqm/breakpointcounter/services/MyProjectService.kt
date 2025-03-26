@@ -22,9 +22,10 @@ class MyProjectService(private val project: Project) : Disposable {
     private fun subscribeToBreakpointEvents() {
         connection = project.messageBus.connect()
 
-        val listener = BreakpointListener(project) { jsonData ->
-            MyToolWindowService.getInstance(project).updateBreakpoints(jsonData)
-        }
+        // Get the JCEF browser instance from MyToolWindowService
+        val browser = MyToolWindowService.getInstance(project).getBrowser()
+
+        val listener = BreakpointListener(project, browser)
 
         connection?.subscribe(XBreakpointListener.TOPIC, object : XBreakpointListener<XBreakpoint<*>> {
             override fun breakpointAdded(breakpoint: XBreakpoint<*>) {
