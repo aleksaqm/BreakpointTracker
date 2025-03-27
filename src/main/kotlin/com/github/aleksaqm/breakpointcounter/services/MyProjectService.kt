@@ -9,21 +9,23 @@ import com.intellij.util.messages.MessageBusConnection
 import com.intellij.xdebugger.XDebuggerManager
 import com.intellij.xdebugger.breakpoints.XBreakpoint
 import com.intellij.xdebugger.breakpoints.XBreakpointListener
+import java.io.File
+import java.io.IOException
 
 class MyProjectService(private val project: Project) : Disposable {
 
     private var connection: MessageBusConnection? = null
 
     init {
-//        thisLogger().warn("MyProjectService initialized for project: ${project.name}")
         subscribeToBreakpointEvents()
+        startFrontendServer()
     }
 
     private fun subscribeToBreakpointEvents() {
         connection = project.messageBus.connect()
 
-        // Get the JCEF browser instance from MyToolWindowService
         val browser = MyToolWindowService.getInstance(project).getBrowser()
+
 
         val listener = BreakpointListener(project, browser)
 
@@ -46,5 +48,21 @@ class MyProjectService(private val project: Project) : Disposable {
         connection?.disconnect()
     }
 
-    fun getRandomNumber() = (1..100).random()
+    private fun startFrontendServer() {
+        val frontendPath = File(System.getProperty("user.dir"), "frontend")
+        thisLogger().warn("AAAAAAAAAAAAAAAAAAAAAAAAA $frontendPath")
+        val processBuilder = ProcessBuilder()
+            .command("npm", "run", "dev")
+            .directory(File(frontendPath.toString()))
+            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+            .redirectError(ProcessBuilder.Redirect.INHERIT)
+
+        try {
+            processBuilder.start()
+            thisLogger().warn("Frontend server started successfully.")
+        } catch (e: IOException) {
+            thisLogger().error("Failed to start frontend server.", e)
+        }
+    }
+
 }

@@ -1,11 +1,9 @@
 package com.github.aleksaqm.breakpointcounter.listeners
 
 import com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowService
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.xdebugger.XDebuggerManager
 import com.intellij.xdebugger.breakpoints.XBreakpoint
 import com.intellij.xdebugger.breakpoints.XBreakpointListener
-import com.intellij.xdebugger.breakpoints.XBreakpointManager
 import com.intellij.openapi.project.Project
 import com.intellij.ui.jcef.JBCefBrowser
 import kotlinx.serialization.Serializable
@@ -17,6 +15,10 @@ data class BreakpointInfo(val file: String, val line: Int?)
 
 class BreakpointListener(private val project: Project, private val browser: JBCefBrowser) :
     XBreakpointListener<XBreakpoint<*>> {
+
+    init {
+        updateBreakpoints()
+    }
 
     override fun breakpointAdded(breakpoint: XBreakpoint<*>) {
         updateBreakpoints()
