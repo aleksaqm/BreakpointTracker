@@ -34,6 +34,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
+    implementation("org.nanohttpd:nanohttpd:2.3.1")
 
     testImplementation(libs.junit)
 
@@ -73,7 +74,6 @@ intellijPlatform {
         }
 
         val changelog = project.changelog // local variable for configuration cache compatibility
-        // Get the latest available change notes from the changelog file
         changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
             with(changelog) {
                 renderItem(
