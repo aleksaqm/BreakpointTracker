@@ -19,12 +19,12 @@ class MyToolWindowService {
 
     init {
         frontendServer.start() // Start the frontend server
-        val frontendUrl = "http://localhost:5173/index.html"
+        val frontendUrl = "http://localhost:${frontendServer.listeningPort}/index.html"
+        thisLogger().warn("AAAAAAAAAAAAAAAAAAAAAAAAAAA Frontend running at: $frontendUrl")
 
-        browser = JBCefBrowser(frontendUrl) // Load the frontend
+        browser = JBCefBrowser(frontendUrl)
         thisLogger().warn("🚀 JCEF Browser initialized with URL: $frontendUrl")
 
-        // Handle page load event
         browser.jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
             override fun onLoadEnd(
                 browser: CefBrowser?,
