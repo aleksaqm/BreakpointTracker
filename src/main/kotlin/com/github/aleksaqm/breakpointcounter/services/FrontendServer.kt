@@ -18,7 +18,7 @@ class FrontendServer : NanoHTTPD(findFreePort()) {
 
     override fun serve(session: IHTTPSession): Response {
         val uri = session.uri.removePrefix("/")
-        val resourcePath = "/frontend/dist/$uri"
+        val resourcePath = "/frontend/$uri"
 
         val devFile = File(devFrontendPath, uri)
         if (devFile.exists() && devFile.isFile) {

@@ -139,6 +139,56 @@ tasks {
     }
 }
 
+val npmCommand = if (System.getProperty("os.name").startsWith("Windows")) "npm.cmd" else "npm"
+
+abstract class NpmTask : Exec() {
+    init {
+        workingDir(File(project.projectDir, "frontend"))
+    }
+}
+
+tasks.register<NpmTask>("npmInstall") {
+    group = "build"
+    description = "Installs frontend dependencies"
+    commandLine(npmCommand, "install")
+    outputs.dir(File(project.projectDir, "frontend/node_modules"))
+}
+
+tasks.register<NpmTask>("npmBuild") {
+    group = "build"
+    description = "Builds the frontend"
+    dependsOn("npmInstall")
+    commandLine(npmCommand, "run", "build")
+    outputs.dir(File(project.projectDir, "frontend/dist"))
+}
+
+
+
+tasks.register("buildFrontend") {
+    notCompatibleWithConfigurationCache("This task modifies resources dynamically.")
+    group = "build"
+    description = "Copies built frontend to resources"
+    dependsOn("npmBuild")
+
+    val frontendDist = layout.projectDirectory.dir("frontend/dist")
+    val resourcesDir = layout.projectDirectory.dir("src/main/resources/frontend")
+
+    outputs.dir(resourcesDir)
+
+    doLast {
+        resourcesDir.asFile.deleteRecursively()
+        frontendDist.asFile.copyRecursively(resourcesDir.asFile, overwrite = true)
+    }
+}
+
+tasks.named("buildPlugin") {
+    dependsOn("buildFrontend")
+}
+
+tasks.named("processResources").configure {
+    dependsOn("buildFrontend")
+}
+
 intellijPlatformTesting {
     runIde {
         register("runIdeForUiTests") {
