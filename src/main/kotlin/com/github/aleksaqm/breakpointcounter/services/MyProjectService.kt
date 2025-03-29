@@ -18,15 +18,12 @@ class MyProjectService(private val project: Project) : Disposable {
 
     init {
         subscribeToBreakpointEvents()
-        startFrontendServer()
     }
 
     private fun subscribeToBreakpointEvents() {
         connection = project.messageBus.connect()
 
         val browser = MyToolWindowService.getInstance(project).getBrowser()
-
-
         val listener = BreakpointListener(project, browser)
 
         connection?.subscribe(XBreakpointListener.TOPIC, object : XBreakpointListener<XBreakpoint<*>> {
@@ -46,23 +43,6 @@ class MyProjectService(private val project: Project) : Disposable {
 
     override fun dispose() {
         connection?.disconnect()
-    }
-
-    private fun startFrontendServer() {
-        val frontendPath = File(System.getProperty("user.dir"), "frontend")
-        thisLogger().warn("AAAAAAAAAAAAAAAAAAAAAAAAA $frontendPath")
-        val processBuilder = ProcessBuilder()
-            .command("npm", "run", "dev")
-            .directory(File(frontendPath.toString()))
-            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
-            .redirectError(ProcessBuilder.Redirect.INHERIT)
-
-        try {
-            processBuilder.start()
-            thisLogger().warn("Frontend server started successfully.")
-        } catch (e: IOException) {
-            thisLogger().error("Failed to start frontend server.", e)
-        }
     }
 
 }
