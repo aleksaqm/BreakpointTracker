@@ -28,7 +28,7 @@ const groupedBreakpoints = computed(() => {
     <p class="count">Number of breakpoints: {{ breakpoints.length }}</p>
     <ul class="breakpoints-list">
       <li v-for="bp in groupedBreakpoints" :key="bp.file" class="breakpoint-item">
-        <strong class="file-name ">{{ bp.file + " - "}}</strong>
+        <strong class="file-name">{{ bp.file }}</strong>
         <span class="lines">lines: {{ bp.lines.join(", ") }}</span>
       </li>
     </ul>
@@ -66,6 +66,9 @@ const groupedBreakpoints = computed(() => {
 }
 
 .breakpoint-item {
+  display: flex;
+  flex-wrap: wrap; /* Allow content to wrap */
+  gap: 8px; /* Adds spacing between filename and lines */
   padding: 8px;
   border-bottom: 1px solid #ccc;
 }
@@ -73,6 +76,10 @@ const groupedBreakpoints = computed(() => {
 .file-name {
   font-weight: bold;
   color: #abcdf1;
+  display: inline-block;
+  max-width: 100%; /* Ensures it doesn't overflow */
+  word-wrap: break-word; /* Ensures long words break */
+  overflow-wrap: break-word;
 }
 
 .lines {
