@@ -9,7 +9,12 @@
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow id="BreakpointTracker"
+                    factoryClass="com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowFactory"
+                    anchor="right"
+                    canCloseContent="false"
+                    canWorkInDumbMode="true"/>
+        <projectService serviceImplementation="com.github.aleksaqm.breakpointcounter.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>

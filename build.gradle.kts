@@ -3,12 +3,13 @@ import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
-    id("java") // Java support
-    alias(libs.plugins.kotlin) // Kotlin support
-    alias(libs.plugins.intelliJPlatform) // IntelliJ Platform Gradle Plugin
-    alias(libs.plugins.changelog) // Gradle Changelog Plugin
-    alias(libs.plugins.qodana) // Gradle Qodana Plugin
-    alias(libs.plugins.kover) // Gradle Kover Plugin
+    id("java")
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.intelliJPlatform)
+    alias(libs.plugins.changelog)
+    alias(libs.plugins.qodana)
+    alias(libs.plugins.kover)
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -31,6 +32,10 @@ repositories {
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
+    implementation("org.nanohttpd:nanohttpd:2.3.1")
+
     testImplementation(libs.junit)
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
@@ -69,7 +74,6 @@ intellijPlatform {
         }
 
         val changelog = project.changelog // local variable for configuration cache compatibility
-        // Get the latest available change notes from the changelog file
         changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
             with(changelog) {
                 renderItem(
@@ -133,6 +137,56 @@ tasks {
     publishPlugin {
         dependsOn(patchChangelog)
     }
+}
+
+val npmCommand = if (System.getProperty("os.name").startsWith("Windows")) "npm.cmd" else "npm"
+
+abstract class NpmTask : Exec() {
+    init {
+        workingDir(File(project.projectDir, "frontend"))
+    }
+}
+
+tasks.register<NpmTask>("npmInstall") {
+    group = "build"
+    description = "Installs frontend dependencies"
+    commandLine(npmCommand, "install")
+    outputs.dir(File(project.projectDir, "frontend/node_modules"))
+}
+
+tasks.register<NpmTask>("npmBuild") {
+    group = "build"
+    description = "Builds the frontend"
+    dependsOn("npmInstall")
+    commandLine(npmCommand, "run", "build")
+    outputs.dir(File(project.projectDir, "frontend/dist"))
+}
+
+
+
+tasks.register("buildFrontend") {
+    notCompatibleWithConfigurationCache("This task modifies resources dynamically.")
+    group = "build"
+    description = "Copies built frontend to resources"
+    dependsOn("npmBuild")
+
+    val frontendDist = layout.projectDirectory.dir("frontend/dist")
+    val resourcesDir = layout.projectDirectory.dir("src/main/resources/frontend")
+
+    outputs.dir(resourcesDir)
+
+    doLast {
+        resourcesDir.asFile.deleteRecursively()
+        frontendDist.asFile.copyRecursively(resourcesDir.asFile, overwrite = true)
+    }
+}
+
+tasks.named("buildPlugin") {
+    dependsOn("buildFrontend")
+}
+
+tasks.named("processResources").configure {
+    dependsOn("buildFrontend")
 }
 
 intellijPlatformTesting {
