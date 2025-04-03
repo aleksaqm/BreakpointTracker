@@ -1,51 +1,121 @@
-# BreakpointCounter
+# Breakpoint Counter Plugin for JetBrains IDEs
 
-![Build](https://github.com/aleksaqm/BreakpointCounter/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+## Overview
+The **Breakpoint Counter Plugin** is a JetBrains IDE plugin that provides a real-time count of active breakpoints in a project. It displays this information in a dedicated **tool window**, ensuring that developers can easily track and manage their breakpoints.
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-
-<!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
-
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
-
-To keep everything working, do not remove `<!-- ... -->` sections. 
-<!-- Plugin description end -->
-
-## Installation
-
-- Using the IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "BreakpointCounter"</kbd> >
-  <kbd>Install</kbd>
-  
-- Using JetBrains Marketplace:
-
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
-
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-- Manually:
-
-  Download the [latest release](https://github.com/aleksaqm/BreakpointCounter/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
+Key features include:
+- **Real-time breakpoint tracking**: Updates automatically when breakpoints are added or removed.
+- **File-specific details**: Displays the file locations of all active breakpoints.
+- **JCEF-based UI**: Uses **JCEF (JetBrains Chromium Embedded Framework)** for an enhanced user interface.
+- **Standalone frontend server** (Optional): Implements a separate frontend server module for better modularity and performance.
 
 ---
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+## Installation
+### Prerequisites
+- IntelliJ IDEA **2023.3+** (or any compatible JetBrains IDE)
+- Java **17+**
+- Node.js **18+** (for frontend build)
+- Gradle **8.0+**
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+### Installing from Source
+1. Clone the repository:
+   ```sh
+   git clone <repository-url>
+   cd BreakpointCounter
+   ```
+2. Build and install the plugin:
+   ```sh
+   ./gradlew buildPlugin
+   ```
+3. Locate the generated `.zip` file in `build/distributions/`.
+4. Open JetBrains IDE, go to **Settings > Plugins > Install Plugin from Disk**.
+5. Select the `.zip` file and install the plugin.
+
+### Running in Development Mode
+To test the plugin within IntelliJ:
+```sh
+./gradlew runIde
+```
+This will start a sandboxed IntelliJ instance with the plugin loaded.
+
+---
+## Usage
+### Opening the Tool Window
+1. Open **View > Tool Windows > Breakpoint Counter**.
+2. The tool window displays:
+   - The total number of breakpoints in the project.
+   - A list of files containing breakpoints with their respective count.
+
+### Live Updates
+- Adding or removing a breakpoint updates the displayed count instantly.
+- The UI automatically refreshes when a breakpoint is modified.
+
+---
+## Technical Details
+### Architecture
+1. **Backend (Kotlin + IntelliJ API)**
+   - Listens for breakpoint changes using IntelliJ’s debugging API.
+   - Starts a lightweight embedded HTTP server using **NanoHTTPD** (if using frontend server module).
+   - Communicates with the frontend via JSON messages.
+
+2. **Frontend (Vue.js + JCEF)**
+   - A Vue.js app renders the breakpoint data.
+   - Served via **NanoHTTPD** at `http://localhost:5173/index.html`.
+   - Uses WebSockets or polling to receive updates from the backend.
+
+### Key Components
+- `BreakpointListenerService`: Monitors breakpoints and sends updates.
+- `MyToolWindowFactory`: Initializes and manages the tool window.
+- `FrontendServer`: Serves the Vue-based UI if the separate frontend server is enabled.
+
+---
+## Development & Contribution
+### Building the Frontend Automatically
+To ensure the frontend is built before `buildPlugin`, Gradle is configured to:
+1. Run `npm install` in the `frontend/` directory.
+2. Run `npm run build`.
+3. Copy the generated `dist/` folder into `src/main/resources/frontend/`.
+
+This process runs automatically when executing:
+```sh
+./gradlew buildPlugin
+```
+
+### Code Structure
+```
+BreakpointCounter/
+├── frontend/           # Vue.js frontend
+│   ├── src/
+│   ├── dist/           # Built frontend (copied to resources)
+│   ├── package.json
+│   ├── vite.config.js
+│   └── ...
+├── src/main/kotlin/
+│   ├── com/github/aleksaqm/breakpointcounter/
+│   │   ├── BreakpointListenerService.kt
+│   │   ├── MyToolWindowFactory.kt
+│   │   ├── FrontendServer.kt
+│   │   └── ...
+├── build.gradle.kts    # Gradle build script
+├── settings.gradle.kts
+└── plugin.xml          # Plugin metadata
+```
+
+---
+## Troubleshooting
+### Plugin Does Not Appear in Tool Windows
+- Ensure the plugin is installed and enabled in **Settings > Plugins**.
+- Restart the IDE and check **View > Tool Windows > Breakpoint Counter**.
+
+### Frontend Does Not Load
+- Run `./gradlew buildFrontend` to manually build the frontend.
+- Ensure `NanoHTTPD` is not blocked by a firewall.
+- Check logs for any errors: `idea.log` (Help > Show Log in Explorer/Finder).
+
+---
+## Contact
+For any issues or feature requests, please open an issue in the repository or reach out via email.
+
+**Repository:** [GitHub Link]
+**Author:** AleksaQM
+
