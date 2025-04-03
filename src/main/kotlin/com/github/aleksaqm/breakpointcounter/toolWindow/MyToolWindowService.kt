@@ -15,12 +15,11 @@ class MyToolWindowService {
     private val frontendServer = FrontendServer()
     private val browser: JBCefBrowser
     @Volatile
-    private var lastLoadedUrl: String? = null // Start as null
+    private var lastLoadedUrl: String? = null
 
     init {
-        frontendServer.start() // Start the frontend server
+        frontendServer.start()
         val frontendUrl = "http://localhost:${frontendServer.listeningPort}/index.html"
-        thisLogger().warn("AAAAAAAAAAAAAAAAAAAAAAAAAAA Frontend running at: $frontendUrl")
 
         browser = JBCefBrowser(frontendUrl)
         thisLogger().warn("🚀 JCEF Browser initialized with URL: $frontendUrl")
@@ -31,7 +30,7 @@ class MyToolWindowService {
                 frame: CefFrame?,
                 httpStatusCode: Int
             ) {
-                lastLoadedUrl = browser?.url ?: frontendUrl // Ensure it never stays null
+                lastLoadedUrl = browser?.url ?: frontendUrl
                 thisLogger().warn("🔄 JCEF Page Loaded: $lastLoadedUrl")
             }
         }, browser.cefBrowser)

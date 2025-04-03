@@ -41,7 +41,7 @@ class BreakpointListener(private val project: Project, private val browser: JBCe
         val breakpointData = breakpoints.mapNotNull { bp ->
             bp.sourcePosition?.file?.path?.replace("\\", "/")?.let { filePath ->
                 val relativePath = filePath.removePrefix("$projectBasePath/")
-                BreakpointInfo(relativePath, bp.sourcePosition?.line)
+                BreakpointInfo(relativePath, bp.sourcePosition?.line?.plus(1))
             }
         }
 
