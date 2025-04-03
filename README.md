@@ -113,9 +113,20 @@ BreakpointTracker/
 - Check logs for any errors: `idea.log` (Help > Show Log in Explorer/Finder).
 
 ---
+## Customization
+If you want to change the appearance of the UI (e.g., colors, fonts, layout), you can modify the App.vue file and other Vue components inside the frontend/src/ directory.
+Test your new UI by runing:
+```sh
+cd frontend
+npm run dev
+```
+When you change it as you like, just build plugin again and reload it in your IDE and you will have UI the way you like it.
+
+---
 ## Contact
 For any issues or feature requests, please open an issue in the repository or reach out via email.
 
-**Repository:** [GitHub Link]
+**Repository:** https://github.com/aleksaqm/BreakpointTracker 
+
 **Author:** AleksaQM
 
