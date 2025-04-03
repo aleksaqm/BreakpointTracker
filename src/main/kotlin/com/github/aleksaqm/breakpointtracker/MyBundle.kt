@@ -1,4 +1,4 @@
-package com.github.aleksaqm.breakpointcounter
+package com.github.aleksaqm.breakpointtracker
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls

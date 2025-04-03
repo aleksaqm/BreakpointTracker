@@ -1,6 +1,6 @@
-package com.github.aleksaqm.breakpointcounter.listeners
+package com.github.aleksaqm.breakpointtracker.listeners
 
-import com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowService
+import com.github.aleksaqm.breakpointtracker.toolWindow.MyToolWindowService
 import com.intellij.xdebugger.XDebuggerManager
 import com.intellij.xdebugger.breakpoints.XBreakpoint
 import com.intellij.xdebugger.breakpoints.XBreakpointListener
@@ -41,7 +41,7 @@ class BreakpointListener(private val project: Project, private val browser: JBCe
         val breakpointData = breakpoints.mapNotNull { bp ->
             bp.sourcePosition?.file?.path?.replace("\\", "/")?.let { filePath ->
                 val relativePath = filePath.removePrefix("$projectBasePath/")
-                BreakpointInfo(relativePath, bp.sourcePosition?.line)
+                BreakpointInfo(relativePath, bp.sourcePosition?.line?.plus(1))
             }
         }
 

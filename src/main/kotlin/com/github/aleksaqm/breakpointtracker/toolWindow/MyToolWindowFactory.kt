@@ -1,11 +1,11 @@
-package com.github.aleksaqm.breakpointcounter.toolWindow
+package com.github.aleksaqm.breakpointtracker.toolWindow
 
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
-import com.github.aleksaqm.breakpointcounter.services.MyProjectService
+import com.github.aleksaqm.breakpointtracker.services.MyProjectService
 
 
 class MyToolWindowFactory : ToolWindowFactory {

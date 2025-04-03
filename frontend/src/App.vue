@@ -67,8 +67,8 @@ const groupedBreakpoints = computed(() => {
 
 .breakpoint-item {
   display: flex;
-  flex-wrap: wrap; /* Allow content to wrap */
-  gap: 8px; /* Adds spacing between filename and lines */
+  flex-wrap: wrap;
+  gap: 8px;
   padding: 8px;
   border-bottom: 1px solid #ccc;
 }
@@ -77,8 +77,8 @@ const groupedBreakpoints = computed(() => {
   font-weight: bold;
   color: #abcdf1;
   display: inline-block;
-  max-width: 100%; /* Ensures it doesn't overflow */
-  word-wrap: break-word; /* Ensures long words break */
+  max-width: 100%;
+  word-wrap: break-word;
   overflow-wrap: break-word;
 }
 

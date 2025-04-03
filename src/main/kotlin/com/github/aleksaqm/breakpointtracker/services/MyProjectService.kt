@@ -1,16 +1,12 @@
-package com.github.aleksaqm.breakpointcounter.services
+package com.github.aleksaqm.breakpointtracker.services
 
-import com.github.aleksaqm.breakpointcounter.listeners.BreakpointListener
-import com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowService
+import com.github.aleksaqm.breakpointtracker.listeners.BreakpointListener
+import com.github.aleksaqm.breakpointtracker.toolWindow.MyToolWindowService
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
 import com.intellij.util.messages.MessageBusConnection
-import com.intellij.xdebugger.XDebuggerManager
 import com.intellij.xdebugger.breakpoints.XBreakpoint
 import com.intellij.xdebugger.breakpoints.XBreakpointListener
-import java.io.File
-import java.io.IOException
 
 class MyProjectService(private val project: Project) : Disposable {
 

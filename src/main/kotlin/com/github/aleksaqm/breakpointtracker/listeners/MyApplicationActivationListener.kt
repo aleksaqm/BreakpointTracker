@@ -1,4 +1,4 @@
-package com.github.aleksaqm.breakpointcounter.listeners
+package com.github.aleksaqm.breakpointtracker.listeners
 
 import com.intellij.openapi.application.ApplicationActivationListener
 import com.intellij.openapi.diagnostic.thisLogger

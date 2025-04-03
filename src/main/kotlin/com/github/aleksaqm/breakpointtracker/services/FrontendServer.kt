@@ -1,4 +1,4 @@
-package com.github.aleksaqm.breakpointcounter.services
+package com.github.aleksaqm.breakpointtracker.services
 
 import fi.iki.elonen.NanoHTTPD
 import java.io.File
