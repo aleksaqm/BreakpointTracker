@@ -13,7 +13,8 @@
                     factoryClass="com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowFactory"
                     anchor="right"
                     canCloseContent="false"
-                    canWorkInDumbMode="true"/>
+                    canWorkInDumbMode="true"
+                    icon="/icons/breakpoint_icon.png"/>
         <projectService serviceImplementation="com.github.aleksaqm.breakpointcounter.services.MyProjectService"/>
     </extensions>
 
