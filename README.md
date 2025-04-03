@@ -1,7 +1,7 @@
-# Breakpoint Counter Plugin for JetBrains IDEs
+# Breakpoint Tracker Plugin for JetBrains IDEs
 
 ## Overview
-The **Breakpoint Counter Plugin** is a JetBrains IDE plugin that provides a real-time count of active breakpoints in a project. It displays this information in a dedicated **tool window**, ensuring that developers can easily track and manage their breakpoints.
+The **Breakpoint Tracker Plugin** is a JetBrains IDE plugin that provides a real-time count of active breakpoints in a project. It displays this information in a dedicated **tool window**, ensuring that developers can easily track and manage their breakpoints.
 
 Key features include:
 - **Real-time breakpoint tracking**: Updates automatically when breakpoints are added or removed.
@@ -21,7 +21,7 @@ Key features include:
 1. Clone the repository:
    ```sh
    git clone <repository-url>
-   cd BreakpointCounter
+   cd BreakpointTracker
    ```
 2. Build and install the plugin:
    ```sh
@@ -41,7 +41,7 @@ This will start a sandboxed IntelliJ instance with the plugin loaded.
 ---
 ## Usage
 ### Opening the Tool Window
-1. Open **View > Tool Windows > Breakpoint Counter**.
+1. Open **View > Tool Windows > Breakpoint Tracker**.
 2. The tool window displays:
    - The total number of breakpoints in the project.
    - A list of files containing breakpoints with their respective count.
@@ -83,7 +83,7 @@ This process runs automatically when executing:
 
 ### Code Structure
 ```
-BreakpointCounter/
+BreakpointTracker/
 ├── frontend/           # Vue.js frontend
 │   ├── src/
 │   ├── dist/           # Built frontend (copied to resources)
@@ -91,7 +91,7 @@ BreakpointCounter/
 │   ├── vite.config.js
 │   └── ...
 ├── src/main/kotlin/
-│   ├── com/github/aleksaqm/breakpointcounter/
+│   ├── com/github/aleksaqm/breakpointtracker/
 │   │   ├── BreakpointListenerService.kt
 │   │   ├── MyToolWindowFactory.kt
 │   │   ├── FrontendServer.kt
@@ -105,7 +105,7 @@ BreakpointCounter/
 ## Troubleshooting
 ### Plugin Does Not Appear in Tool Windows
 - Ensure the plugin is installed and enabled in **Settings > Plugins**.
-- Restart the IDE and check **View > Tool Windows > Breakpoint Counter**.
+- Restart the IDE and check **View > Tool Windows > Breakpoint Tracker**.
 
 ### Frontend Does Not Load
 - Run `./gradlew buildFrontend` to manually build the frontend.
