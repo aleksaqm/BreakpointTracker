@@ -64,9 +64,9 @@ This will start a sandboxed IntelliJ instance with the plugin loaded.
    - Uses WebSockets or polling to receive updates from the backend.
 
 ### Key Components
-- `BreakpointListenerService`: Monitors breakpoints and sends updates.
+- `BreakpointListener`: Monitors breakpoints and sends updates.
 - `MyToolWindowFactory`: Initializes and manages the tool window.
-- `FrontendServer`: Serves the Vue-based UI if the separate frontend server is enabled.
+- `FrontendServer`: Serves the Vue-based UI.
 
 ---
 ## Development & Contribution
