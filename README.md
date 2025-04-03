@@ -2,12 +2,17 @@
 
 ## Overview
 The **Breakpoint Tracker Plugin** is a JetBrains IDE plugin that provides a real-time count of active breakpoints in a project. It displays this information in a dedicated **tool window**, ensuring that developers can easily track and manage their breakpoints.
+<!-- Plugin description -->
+This plugin displays the number of breakpoints in a project and updates dynamically as breakpoints are added or removed. Each breakpoint entry includes the file where it's located. The plugin uses JCEF to render a UI in a tool window.
+<!-- Plugin description end -->
 
 Key features include:
 - **Real-time breakpoint tracking**: Updates automatically when breakpoints are added or removed.
 - **File-specific details**: Displays the file locations of all active breakpoints.
 - **JCEF-based UI**: Uses **JCEF (JetBrains Chromium Embedded Framework)** for an enhanced user interface.
 - **Standalone frontend server** (Optional): Implements a separate frontend server module for better modularity and performance.
+
+
 
 ---
 ## Installation
