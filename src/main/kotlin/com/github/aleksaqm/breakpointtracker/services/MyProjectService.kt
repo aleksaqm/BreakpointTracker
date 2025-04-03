@@ -1,7 +1,7 @@
-package com.github.aleksaqm.breakpointcounter.services
+package com.github.aleksaqm.breakpointtracker.services
 
-import com.github.aleksaqm.breakpointcounter.listeners.BreakpointListener
-import com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowService
+import com.github.aleksaqm.breakpointtracker.listeners.BreakpointListener
+import com.github.aleksaqm.breakpointtracker.toolWindow.MyToolWindowService
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.project.Project
 import com.intellij.util.messages.MessageBusConnection

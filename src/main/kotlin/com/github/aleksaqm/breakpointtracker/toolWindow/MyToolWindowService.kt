@@ -1,6 +1,6 @@
-package com.github.aleksaqm.breakpointcounter.toolWindow
+package com.github.aleksaqm.breakpointtracker.toolWindow
 
-import com.github.aleksaqm.breakpointcounter.services.FrontendServer
+import com.github.aleksaqm.breakpointtracker.services.FrontendServer
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
@@ -22,7 +22,7 @@ class MyToolWindowService {
         val frontendUrl = "http://localhost:${frontendServer.listeningPort}/index.html"
 
         browser = JBCefBrowser(frontendUrl)
-        thisLogger().warn("🚀 JCEF Browser initialized with URL: $frontendUrl")
+        thisLogger().warn("JCEF Browser initialized with URL: $frontendUrl")
 
         browser.jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
             override fun onLoadEnd(
@@ -31,7 +31,6 @@ class MyToolWindowService {
                 httpStatusCode: Int
             ) {
                 lastLoadedUrl = browser?.url ?: frontendUrl
-                thisLogger().warn("🔄 JCEF Page Loaded: $lastLoadedUrl")
             }
         }, browser.cefBrowser)
     }

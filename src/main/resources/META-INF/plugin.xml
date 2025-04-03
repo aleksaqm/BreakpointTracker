@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.aleksaqm.breakpointcounter</id>
-    <name>BreakpointCounter</name>
+    <id>com.github.aleksaqm.breakpointtracker</id>
+    <name>BreakpointTracker</name>
     <vendor>aleksaqm</vendor>
 
     <depends>com.intellij.modules.platform</depends>
@@ -10,15 +10,15 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="BreakpointTracker"
-                    factoryClass="com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowFactory"
+                    factoryClass="com.github.aleksaqm.breakpointtracker.toolWindow.MyToolWindowFactory"
                     anchor="right"
                     canCloseContent="false"
                     canWorkInDumbMode="true"
                     icon="/icons/breakpoint_icon.png"/>
-        <projectService serviceImplementation="com.github.aleksaqm.breakpointcounter.services.MyProjectService"/>
+        <projectService serviceImplementation="com.github.aleksaqm.breakpointtracker.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="com.github.aleksaqm.breakpointcounter.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
+        <listener class="com.github.aleksaqm.breakpointtracker.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
     </applicationListeners>
 </idea-plugin>

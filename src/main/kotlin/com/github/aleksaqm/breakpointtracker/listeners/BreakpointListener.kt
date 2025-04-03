@@ -1,6 +1,6 @@
-package com.github.aleksaqm.breakpointcounter.listeners
+package com.github.aleksaqm.breakpointtracker.listeners
 
-import com.github.aleksaqm.breakpointcounter.toolWindow.MyToolWindowService
+import com.github.aleksaqm.breakpointtracker.toolWindow.MyToolWindowService
 import com.intellij.xdebugger.XDebuggerManager
 import com.intellij.xdebugger.breakpoints.XBreakpoint
 import com.intellij.xdebugger.breakpoints.XBreakpointListener
