@@ -119,7 +119,9 @@ BreakpointTracker/
 
 ---
 ## Customization
-If you want to change the appearance of the UI (e.g., colors, fonts, layout), you can modify the App.vue file and other Vue components inside the frontend/src/ directory.
+For now plugin has 2 UI themes for light and dark mode (based by system **prefers-color-scheme**)
+
+If you want to change the appearance of the UI (e.g., colors, fonts, layout), you can modify the styles.css file or App.vue inside the frontend/src/ directory.
 Test your new UI by runing:
 ```sh
 cd frontend
