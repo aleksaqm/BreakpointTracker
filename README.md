@@ -53,7 +53,7 @@ This will start a sandboxed IntelliJ instance with the plugin loaded.
 
 ### Live Updates
 - Adding or removing a breakpoint updates the displayed count instantly.
-- The UI automatically refreshes when a breakpoint is modified.
+- The UI automatically refreshes when a breakpoints are modified.
 
 ---
 ## Technical Details
@@ -119,15 +119,15 @@ BreakpointTracker/
 
 ---
 ## Customization
-For now plugin has 2 UI themes for light and dark mode (based by system **prefers-color-scheme**)
+Currently, the plugin supports two UI themes (light and dark) based by system **prefers-color-scheme**
 
 If you want to change the appearance of the UI (e.g., colors, fonts, layout), you can modify the styles.css file or App.vue inside the frontend/src/ directory.
-Test your new UI by runing:
+Test your new UI by running:
 ```sh
 cd frontend
 npm run dev
 ```
-When you change it as you like, just build plugin again and reload it in your IDE and you will have UI the way you like it.
+Once you're happy with the changes, rebuild the plugin and reload it in your IDE to see the updated UI.
 
 ---
 ## Contact
