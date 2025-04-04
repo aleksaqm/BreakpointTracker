@@ -28,9 +28,9 @@ Key features include:
    git clone <repository-url>
    cd BreakpointTracker
    ```
-2. Build and install the plugin:
+2. Load project and then build and install the plugin:
    ```sh
-   ./gradlew buildPlugin
+   ./gradlew clean buildPlugin
    ```
 3. Locate the generated `.zip` file in `build/distributions/`.
 4. Open JetBrains IDE, go to **Settings > Plugins > Install Plugin from Disk**.
