@@ -39,7 +39,7 @@ const groupedBreakpoints = computed(() => {
 .container {
   width: 100%;
   max-width: 600px;
-  margin: 0 auto;
+  margin: auto auto auto 20px;
   padding: 20px;
   text-align: left;
 
@@ -53,6 +53,7 @@ const groupedBreakpoints = computed(() => {
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 10px;
+  color: var(--highlight-color);
 }
 
 .count {
@@ -70,12 +71,12 @@ const groupedBreakpoints = computed(() => {
   flex-wrap: wrap;
   gap: 8px;
   padding: 8px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .file-name {
   font-weight: bold;
-  color: #abcdf1;
+  color: var(--highlight-color);
   display: inline-block;
   max-width: 100%;
   word-wrap: break-word;
@@ -84,6 +85,6 @@ const groupedBreakpoints = computed(() => {
 
 .lines {
   font-size: 0.9rem;
-  color: #f9f9f9;
+  color: var(--secondary-text-color);
 }
 </style>
