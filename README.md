@@ -121,6 +121,8 @@ BreakpointTracker/
 ## Customization
 Currently, the plugin supports two UI themes (light and dark) based by system **prefers-color-scheme**
 
+Theme detection uses CSS media queries (prefers-color-scheme). Actual results may vary depending on your OS and JetBrains IDE theme settings.
+
 If you want to change the appearance of the UI (e.g., colors, fonts, layout), you can modify the styles.css file or App.vue inside the frontend/src/ directory.
 Test your new UI by running:
 ```sh
