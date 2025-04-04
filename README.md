@@ -66,7 +66,6 @@ This will start a sandboxed IntelliJ instance with the plugin loaded.
 2. **Frontend (Vue.js + JCEF)**
    - A Vue.js app renders the breakpoint data.
    - Served via **NanoHTTPD** at `http://localhost:5173/index.html`.
-   - Uses WebSockets or polling to receive updates from the backend.
 
 ### Key Components
 - `BreakpointListener`: Monitors breakpoints and sends updates.
