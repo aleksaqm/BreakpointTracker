@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
     implementation("org.nanohttpd:nanohttpd:2.3.1")
 
